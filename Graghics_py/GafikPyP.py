@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
 AutoMinorLocator)
 import numpy as np
-import pandas as pd
 #библиотеки
 
 #реализация выбора
@@ -12,9 +11,14 @@ proverca = int(input())
 
 
 
+lamb = 0.546
 
-x1 = 2.51, 2.58, 2.67, 2.78, 2.87, 2.94, 3.03, 3.12, 3.23, 3.32, 3.41, 3.48, 3.57, 3.68, 3.75, 3.86, 3.93, 4.02, 4.13, 4.22, 4.31, 4.38, 4.47, 4.56, 4.67, 4.74, 4.85, 4.92, 5.01, 5.12, 5.21
-y1 = 50.2, 50.97, 51.75, 55.15, 56.17, 52.81, 56.08, 56.95, 58.06, 59.39, 60.32, 63.7, 60.89, 66.29, 65.13, 66.79, 65.88, 71.38, 68.32, 71.89, 75.27, 76.48, 76.32, 75.79, 76.88, 82.41, 81.96, 83.55, 87.16, 89.21, 88.89
+fi = [287, 288, 290, 292, 293, 294]
+fi = [np.sin(i * np.pi / 180 ) - np.sin(np.pi / 4) for i in fi]
+l = [4047, 4358, 4916, 5461, 5770, 6234]
+
+#m = np.linspace(1, 6, 6);
+
 
 #x2 = 206.06928,	397.01424,	579.65056,	745.15392,	884.7,	989.46448,	1044.576039
 #y2 = 4.5, 9, 16.5, 21, 27, 28.5, 30
@@ -54,19 +58,16 @@ y1 = 50.2, 50.97, 51.75, 55.15, 56.17, 52.81, 56.08, 56.95, 58.06, 59.39, 60.32,
 
 
 
-tochki1 = np.linspace(x1[0], x1[-1], 10000)
-#tochki2 = np.linspace(x2[0], x2[-1], 10000)
+tochki1 = np.linspace(l[0], l[-1], 10000)
+tochki2 = np.linspace(l[0], l[-1], 10000)
 #tochki3 = np.linspace(x3[0], x3[-1], 10000)
 #tochki4 = np.linspace(x4[0], x4[-1], 10000)
 #tochki5 = np.linspace(x5[0], x5[-1], 10000)
 #tochki6 = np.linspace(x6[0], x6[-1], 10000)
 
 
-z1 = np.polyfit(x1, y1, 2) 
-p1 = np.poly1d(z1)  
-
-#z2 = np.polyfit(x2, y2, 1) 
-#p2 = np.poly1d(z2)  
+z1 = np.polyfit(l, fi, 1)
+p1 = np.poly1d(z1)
 
 #z3 = np.polyfit(x3, y3, 1) 
 #p3 = np.poly1d(z3)  
@@ -83,7 +84,7 @@ p1 = np.poly1d(z1)
 
 
 
-#fig, ax = plt.subplots(figsize=(10, 7))
+fig, ax = plt.subplots(figsize=(10, 7))
 if proverca == 1:
     fig, ax = plt.subplots(figsize=(10, 7))
 else:
@@ -95,9 +96,9 @@ else:
 ##обрезка координат
 
 
-#ax.set_title("Зависимость остмотического давления от концентрации K4Fe(CN)6 в воде", fontsize=16)                    #название графика
-ax.set_xlabel("Сила тока в обмотке [А]", fontsize=14)                        #название оси х
-ax.set_ylabel("Угловая скорость диска [рад/с]", fontsize=14)     #название оси у
+ax.set_title("Зависимость $sin \\varphi - sin \\psi$ от $\\lambda$", fontsize=16)                    #название графика
+ax.set_xlabel("$\\lambda, A$", fontsize=14)                        #название оси х
+ax.set_ylabel("$sin \\varphi - sin \\psi$", fontsize=14)     #название оси у
 #названия и имена 
 
 
@@ -112,14 +113,14 @@ ax.grid(which="minor", linestyle="--", color="gray", linewidth=0.5) #минор�
 #создаём сетку для графика
 
 
-ax.plot(x1, y1,"r.", markersize=8, label = 'Ток на образце 0.2 А')
-#ax.plot(x2, y2,"b.", markersize=8, label = 'Ток на образце 0.4 А' )
+ax.plot(l, fi,"r.", markersize=8, label = 'k = 250 $\\cdot 10^3 м^{-1}$')
+#ax.plot(m, r_l,"b.", markersize=8, label = 'Светлые кольца: k = 21.0нм' )
 #ax.plot(x3, y3,"g.", markersize=8, label = 'Ток на образце 0.6 А' )
 #ax.plot(x4, y4,"y.", markersize=8, label = 'Ток на образце 0.8 А')
 #ax.plot(x5, y5,"k.", markersize=8, label = 'Ток на образце 1.0 А' )
 #ax.plot(x6, y6,"m.", markersize=8, label = 'Ток на образце 1.2 А' )
 #строительство графика на рисунке
-ax.plot(tochki1, p1(tochki1), 'b--', label = '')
+ax.plot(tochki1, p1(tochki1), 'r--', label = '')
 #ax.plot(tochki2, p2(tochki2), 'b--', label = '')
 #ax.plot(tochki3, p3(tochki3), 'g--', label = '')
 #ax.plot(tochki4, p4(tochki4), 'y--', label = '')
@@ -127,13 +128,13 @@ ax.plot(tochki1, p1(tochki1), 'b--', label = '')
 #ax.plot(tochki6, p6(tochki6), 'm--', label = '')
 
 
-#ax.plot(x2, p2(x2), 'g--', label = 'Максимальный наклон кривой')
+# ax.plot(m, p2(m), 'g--', label = 'Максимальный наклон кривой')
 #ax.plot(x3, p3(x3), 'b--')
 #в скобказ указываем точки графика для которого сторим линию тренда и функцию полинома
 #строительство линии тренда
 #ax.set_xticks(numpy.arange(0, 1000, 10))
 #ax.set_yticks(numpy.arange(0, 1., 0.1))
-#ax.legend()
+ax.legend()
 ax.xaxis.set_minor_locator(AutoMinorLocator())
 ax.yaxis.set_minor_locator(AutoMinorLocator())
 ax.tick_params(which='major', length=10, width=1)
@@ -178,4 +179,4 @@ ax.tick_params(which='minor', length=5, width=1)
 if proverca == 1:
     plt.show()
 else:
-    plt.savefig("C:/Users/Keys/Desktop/Image.png")
+    plt.savefig("sin.png")
