@@ -11,12 +11,25 @@ proverca = int(input())
 
 
 
-lamb = 0.546
+b1 = 130
+a1 = 5
 
-fi = [287, 288, 290, 292, 293, 294]
-fi = [np.sin(i * np.pi / 180 ) - np.sin(np.pi / 4) for i in fi]
-l = [4047, 4358, 4916, 5461, 5770, 6234]
+D_big = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500]
+D1 = [2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10]
+D = [50, 100, 150, 200, 250, 300]
+Dl = [a1 * d * 1000/ b1 for d in D1]
+# print(Dl)
 
+
+lamda = 632
+L = 135
+dx = [60, 21.1, 13, 10, 6.6, 5.4]
+Dc = [lamda * L * 2 * 0.01/ x for x in dx]
+# print(Dc)
+
+dy = [5.56, 2.19, 1.07]
+
+dc = [ 1 / (lamda * 11 / y * 0.00001) for y in dy]
 #m = np.linspace(1, 6, 6);
 
 
@@ -58,19 +71,19 @@ l = [4047, 4358, 4916, 5461, 5770, 6234]
 
 
 
-tochki1 = np.linspace(l[0], l[-1], 10000)
-tochki2 = np.linspace(l[0], l[-1], 10000)
-#tochki3 = np.linspace(x3[0], x3[-1], 10000)
+tochki1 = np.linspace(dc[0], dc[-1], 10000)
+# tochki2 = np.linspace(D[0], D[-1], 10000)
+# tochki3 = np.linspace(x3[0], x3[-1], 10000)
 #tochki4 = np.linspace(x4[0], x4[-1], 10000)
 #tochki5 = np.linspace(x5[0], x5[-1], 10000)
 #tochki6 = np.linspace(x6[0], x6[-1], 10000)
 
 
-z1 = np.polyfit(l, fi, 1)
+z1 = np.polyfit(dc, dy, 1)
 p1 = np.poly1d(z1)
 
-#z3 = np.polyfit(x3, y3, 1) 
-#p3 = np.poly1d(z3)  
+# z3 = np.polyfit(D, Dc, 1)
+# p3 = np.poly1d(z3)
 
 #z4 = np.polyfit(x4, y4, 1) 
 #p4 = np.poly1d(z4)  
@@ -96,9 +109,9 @@ else:
 ##обрезка координат
 
 
-ax.set_title("Зависимость $sin \\varphi - sin \\psi$ от $\\lambda$", fontsize=16)                    #название графика
-ax.set_xlabel("$\\lambda, A$", fontsize=14)                        #название оси х
-ax.set_ylabel("$sin \\varphi - sin \\psi$", fontsize=14)     #название оси у
+ax.set_title("Зависимость $\\Delta y$ от $1/d_c$")                    #название графика
+ax.set_xlabel("$1/d_c, мм ^{-1}$", fontsize=14)                        #название оси х
+ax.set_ylabel("$\\Delta y, мм$", fontsize=14)     #название оси у
 #названия и имена 
 
 
@@ -113,15 +126,15 @@ ax.grid(which="minor", linestyle="--", color="gray", linewidth=0.5) #минор�
 #создаём сетку для графика
 
 
-ax.plot(l, fi,"r.", markersize=8, label = 'k = 250 $\\cdot 10^3 м^{-1}$')
-#ax.plot(m, r_l,"b.", markersize=8, label = 'Светлые кольца: k = 21.0нм' )
+ax.plot(dc, dy,"r.", markersize=8, label = '$\\Delta y = f (1/d_c)$')
+# ax.plot(D, Dc,"b.", markersize=8, label = '$D_{c} = f(D)$' )
 #ax.plot(x3, y3,"g.", markersize=8, label = 'Ток на образце 0.6 А' )
 #ax.plot(x4, y4,"y.", markersize=8, label = 'Ток на образце 0.8 А')
 #ax.plot(x5, y5,"k.", markersize=8, label = 'Ток на образце 1.0 А' )
 #ax.plot(x6, y6,"m.", markersize=8, label = 'Ток на образце 1.2 А' )
 #строительство графика на рисунке
 ax.plot(tochki1, p1(tochki1), 'r--', label = '')
-#ax.plot(tochki2, p2(tochki2), 'b--', label = '')
+# ax.plot(tochki2, p3(tochki2), 'b--', label = '')
 #ax.plot(tochki3, p3(tochki3), 'g--', label = '')
 #ax.plot(tochki4, p4(tochki4), 'y--', label = '')
 #ax.plot(tochki5, p5(tochki5), 'k--', label = '')
@@ -179,4 +192,4 @@ ax.tick_params(which='minor', length=5, width=1)
 if proverca == 1:
     plt.show()
 else:
-    plt.savefig("sin.png")
+    plt.savefig("dy.png")
